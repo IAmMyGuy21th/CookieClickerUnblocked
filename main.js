@@ -741,7 +741,7 @@ if (!document.hasFocus) document.hasFocus=function(){return document.hidden;};//
 
 function AddEvent(el,ev,func)
 {
-	//ie. myListener=AddEvent(l('element'),'click',function(){console.log('hi!');});
+	//ie. myListener=AddEvent(l('element'),'keypress',function(){console.log('hi!');});
 	if (el.addEventListener) {el.addEventListener(ev,func,false);return [el,ev,func];}
 	else if (el.attachEvent) {var func2=function(){func.call(el);};el.attachEvent('on'+ev,func2);return [el,ev,func2];}
 	return false;
@@ -1030,7 +1030,7 @@ var Game={};
 			'ticker' - called when determining news ticker text; should return an array of possible choices to add
 			'cps' - called when determining the CpS; parameter is the current CpS; should return the modified CpS
 			'cookiesPerClick' - called when determining the cookies per click; parameter is the current value; should return the modified value
-			'click' - called when the big cookie is clicked
+			'keypress' - called when the big cookie is clicked
 			'create' - called after the game declares all buildings, buffs, upgrades and achievs; use this to declare your own - note that while the game distinguishes between vanilla and non-vanilla content, saving/loading functionality for custom content (including stuff like active buffs or permanent upgrade slotting) is not explicitly implemented and may be unpredictable and broken
 			'check' - called every few seconds when we check for upgrade/achiev unlock conditions; you can also use this for other checks that you don't need happening every logic frame
 		-function hooks are provided for convenience and more advanced mod functionality will probably involve manual code injection
@@ -1043,7 +1043,7 @@ var Game={};
 	Game.brokenMods=[];
 	Game.modSaveData={};
 	Game.modHooks={};
-	Game.modHooksNames=['logic','draw','reset','reincarnate','ticker','cps','cookiesPerClick','click','create','check'];
+	Game.modHooksNames=['logic','draw','reset','reincarnate','ticker','cps','cookiesPerClick','keypress','create','check'];
 	for (var i=0;i<Game.modHooksNames.length;i++){Game.modHooks[Game.modHooksNames[i]]=[];}
 	Game.registerMod=function(id,mod)
 	{
@@ -1202,7 +1202,7 @@ var Game={};
 			init:function(){
 				Game.registerHook('reincarnate',function(){Game.mods['test mod'].addIntro();});
 				Game.registerHook('check',function(){if (!Game.playerIntro){Game.mods['test mod'].addIntro();}});
-				Game.registerHook('click',function(){Game.Notify(choose(['A good click.','A solid click.','A mediocre click.','An excellent click!']),'',0,0.5);});
+				Game.registerHook('keypress',function(){Game.Notify(choose(['A good click.','A solid click.','A mediocre click.','An excellent click!']),'',0,0.5);});
 				Game.registerHook('cps',function(cps){return cps*2;});
 			},
 			save:function(){
@@ -2274,7 +2274,7 @@ Game.Launch=function()
 		{
 			l('bakeryNameInput').value=Game.RandomBakeryName();
 		}
-		AddEvent(Game.bakeryNameL,'click',Game.bakeryNamePrompt);
+		AddEvent(Game.bakeryNameL,'keypress',Game.bakeryNamePrompt);
 		
 		Game.bakeryNameSet(Game.GetBakeryName());
 		
@@ -2530,13 +2530,13 @@ Game.Launch=function()
 		if (!App)
 		{
 			Game.attachTooltip(l('httpsSwitch'),'<div style="padding:8px;width:350px;text-align:center;font-size:11px;">'+loc("You are currently playing Cookie Clicker on the <b>%1</b> protocol.<br>The <b>%2</b> version uses a different save slot than this one.<br>Click this lock to reload the page and switch to the <b>%2</b> version!",[(Game.https?'HTTPS':'HTTP'),(Game.https?'HTTP':'HTTPS')])+'</div>','this');
-			AddEvent(l('httpsSwitch'),'click',function(){
+			AddEvent(l('httpsSwitch'),'keypress',function(){
 				PlaySound('snd/pop'+Math.floor(Math.random()*3+1)+'.mp3',0.75);
 				if (location.protocol=='https:') location.href='http:'+window.location.href.substring(window.location.protocol.length);
 				else if (location.protocol=='http:') location.href='https:'+window.location.href.substring(window.location.protocol.length);
 			});
 			
-			AddEvent(l('changeLanguage'),'click',function()
+			AddEvent(l('changeLanguage'),'keypress',function()
 			{
 				Game.showLangSelection();
 			});
@@ -4066,7 +4066,7 @@ Game.Launch=function()
 		
 		Game.UpdateAscensionModePrompt();
 		
-		AddEvent(l('ascendButton'),'click',function(){
+		AddEvent(l('ascendButton'),'keypress',function(){
 			PlaySound('snd/tick.mp3');
 			Game.Reincarnate();
 		});
@@ -4717,7 +4717,7 @@ Game.Launch=function()
 				mult*=1+0.05*Math.min(Game.Objects['Cursor'].level,Game.Has('Luminous gloves')?20:10);
 			}
 			
-			mult*=Game.eff('click');
+			mult*=Game.eff('keypress');
 			
 			if (Game.hasGod)
 			{
@@ -4773,7 +4773,7 @@ Game.Launch=function()
 					Game.autoclickerDetected+=Game.fps;
 					if (Game.autoclickerDetected>=Game.fps*5) Game.Win('Uncanny clicker');
 				}
-				Game.loseShimmeringVeil('click');
+				Game.loseShimmeringVeil('keypress');
 				var amount=amount?amount:Game.computedMouseCps;
 				Game.Earn(amount);
 				Game.handmadeCookies+=amount;
@@ -4784,7 +4784,7 @@ Game.Launch=function()
 				}
 				if (Game.prefs.numbers) Game.particleAdd(Game.mouseX+Math.random()*8-4,Game.mouseY-8+Math.random()*8-4,0,-2,1,4,2,'','+'+Beautify(amount,1));
 				
-				Game.runModHook('click');
+				Game.runModHook('keypress');
 				
 				Game.playCookieClickSound();
 				Game.cookieClicks++;
@@ -4855,7 +4855,7 @@ Game.Launch=function()
 			AddEvent(document,'mousemove',Game.GetMouseCoords);
 			AddEvent(document,'mousedown',function(event){Game.lastActivity=Game.time;Game.mouseDown=1;Game.clickFrom=event.target;});
 			AddEvent(document,'mouseup',function(event){Game.lastActivity=Game.time;Game.mouseDown=0;Game.clickFrom=0;});
-			AddEvent(document,'click',function(event){Game.lastActivity=Game.time;Game.Click=1;Game.lastClickedEl=event.target;Game.clickFrom=0;});
+			AddEvent(document,'keypress',function(event){Game.lastActivity=Game.time;Game.Click=1;Game.lastClickedEl=event.target;Game.clickFrom=0;});
 			Game.handleScroll=function(e)
 			{
 				if (!e) e=event;
@@ -5193,7 +5193,7 @@ Game.Launch=function()
 			
 			this.l=document.createElement('div');
 			this.l.className='shimmer';
-			if (!Game.touchEvents) {AddEvent(this.l,'click',function(what){return function(event){what.pop(event);};}(this));}
+			if (!Game.touchEvents) {AddEvent(this.l,'keypress',function(what){return function(event){what.pop(event);};}(this));}
 			else {AddEvent(this.l,'touchend',function(what){return function(event){what.pop(event);};}(this));}//touch events
 			
 			this.x=0;
@@ -6280,7 +6280,7 @@ Game.Launch=function()
 		PROMPT
 		=======================================================================================*/
 		Game.darkenL=l('darken');
-		AddEvent(Game.darkenL,'click',function(){if (Game.promptNoClose) {} else {Game.Click=0;PlaySound('snd/tickOff.mp3');Game.ClosePrompt();}});
+		AddEvent(Game.darkenL,'keypress',function(){if (Game.promptNoClose) {} else {Game.Click=0;PlaySound('snd/tickOff.mp3');Game.ClosePrompt();}});
 		Game.promptL=l('promptContent');
 		Game.promptAnchorL=l('promptAnchor');
 		Game.promptWrapL=l('prompt');
@@ -6353,7 +6353,7 @@ Game.Launch=function()
 		Game.ConfirmPrompt=function()
 		{
 			var el=l('promptOption'+Game.promptOptionFocus);
-			if (Game.promptOn && el && el.style.display!='none' && (' '+el.className+' ').indexOf(' disabled ')==-1) FireEvent(el,'click');
+			if (Game.promptOn && el && el.style.display!='none' && (' '+el.className+' ').indexOf(' disabled ')==-1) FireEvent(el,'keypress');
 		}
 		Game.FocusPromptOption=function(dir,tryN)
 		{
@@ -6574,7 +6574,7 @@ Game.Launch=function()
 			for (var i in Langs)
 			{
 				var lang=Langs[i];
-				AddEvent(l('langSelect-'+i),'click',function(lang){return function(){
+				AddEvent(l('langSelect-'+i),'keypress',function(lang){return function(){
 					if (true)//lang!=locId)
 					{
 						PlaySound('snd/tick.mp3');
@@ -6953,7 +6953,7 @@ Game.Launch=function()
 					if (it.href)
 					{
 						console.log(it.href);
-						AddEvent(it,'click',function(href){return function(){
+						AddEvent(it,'keypress',function(href){return function(){
 							App.openLink(href);
 						}}(it.href));
 						it.removeAttribute('href');
@@ -6965,10 +6965,10 @@ Game.Launch=function()
 			});*/
 		}
 		
-		AddEvent(l('prefsButton'),'click',function(){Game.ShowMenu('prefs');});
-		AddEvent(l('statsButton'),'click',function(){Game.ShowMenu('stats');});
-		AddEvent(l('logButton'),'click',function(){Game.ShowMenu('log');});
-		AddEvent(l('legacyButton'),'click',function(){PlaySound('snd/tick.mp3');Game.Ascend();});
+		AddEvent(l('prefsButton'),'keypress',function(){Game.ShowMenu('prefs');});
+		AddEvent(l('statsButton'),'keypress',function(){Game.ShowMenu('stats');});
+		AddEvent(l('logButton'),'keypress',function(){Game.ShowMenu('log');});
+		AddEvent(l('legacyButton'),'keypress',function(){PlaySound('snd/tick.mp3');Game.Ascend();});
 		Game.ascendMeter=l('ascendMeter');
 		Game.ascendNumber=l('ascendNumber');
 		
@@ -7620,7 +7620,7 @@ Game.Launch=function()
 			void Game.tickerL.offsetWidth;
 			Game.tickerL.className='commentsText risingUp';
 		}
-		AddEvent(Game.tickerL,'click',function(event){
+		AddEvent(Game.tickerL,'keypress',function(event){
 			Game.Ticker='';
 			Game.TickerClicks++;
 			if (Game.windowW<Game.tickerTooNarrow) {Game.Win('Stifling the press');}
@@ -8584,7 +8584,7 @@ Game.Launch=function()
 				//these are a bit messy but ah well
 				if (!Game.touchEvents)
 				{
-					AddEvent(me.l,'click',function(what){return function(e){Game.ClickProduct(what);e.preventDefault();};}(me.id));
+					AddEvent(me.l,'keypress',function(what){return function(e){Game.ClickProduct(what);e.preventDefault();};}(me.id));
 				}
 				else
 				{
@@ -11290,7 +11290,7 @@ Game.Launch=function()
 			if (Game.Has('Reinforced membrane'))
 			{
 				if (context=='shimmer') Math.seedrandom(Game.seed+'/'+(Game.goldenClicks+Game.reindeerClicked));
-				else if (context=='click') Math.seedrandom(Game.seed+'/'+Game.cookieClicks);
+				else if (context=='keypress') Math.seedrandom(Game.seed+'/'+Game.cookieClicks);
 				if (Math.random()<Game.getVeilDefense())
 				{
 					Game.Notify(loc("The reinforced membrane protects the shimmering veil."),'',[7,10]);
@@ -12016,7 +12016,7 @@ Game.Launch=function()
 					}
 				},true);
 			
-				l('promptOption0').addEventListener('click',function(){
+				l('promptOption0').addEventListener('keypress',function(){
 					
 					var out=checkCode(l('giftCode').value);
 					if (out==-1) return false;
@@ -12095,7 +12095,7 @@ Game.Launch=function()
 					var icon=Game.giftBoxDesigns[0];
 					l('giftBoxDesign').dataset.icon=icon[0]+' '+icon[1];
 					l('giftBoxDesign').style.backgroundPosition=(-icon[0]*48)+'px '+(-icon[1]*48)+'px';
-					l('giftBoxDesignButton').addEventListener('click',function(){
+					l('giftBoxDesignButton').addEventListener('keypress',function(){
 						PlaySound('snd/tick.mp3');
 						var icons=Game.giftBoxDesigns;
 						var str='';
@@ -12108,7 +12108,7 @@ Game.Launch=function()
 						l('giftPromptSelector').style.display='block';
 						for (var i=0;i<icons.length;i++)
 						{
-							l('giftSelector-'+i).addEventListener('click',function(e){
+							l('giftSelector-'+i).addEventListener('keypress',function(e){
 								var icon=e.target.dataset.icon.split(' ');icon=[parseInt(icon[0]),parseInt(icon[1])];
 								l('giftBoxDesign').dataset.icon=icon[0]+' '+icon[1];
 								l('giftBoxDesign').style.backgroundPosition=(-icon[0]*48)+'px '+(-icon[1]*48)+'px';
@@ -12160,7 +12160,7 @@ Game.Launch=function()
 						l('giftPromptSelector').innerHTML=str;
 						l('giftPromptSelector').style.display='block';
 						
-						l('giftSelector-none').addEventListener('click',function(e){
+						l('giftSelector-none').addEventListener('keypress',function(e){
 							l('giftBoxIcon').dataset.icon='none';
 							l('giftBoxIconNone').style.display='inline-block';
 							l('giftBoxIcon').style.display='none';
@@ -12169,7 +12169,7 @@ Game.Launch=function()
 						});
 						for (var i=0;i<icons.length;i++)
 						{
-							l('giftSelector-'+i).addEventListener('click',function(e){
+							l('giftSelector-'+i).addEventListener('keypress',function(e){
 								var icon=e.target.dataset.icon.split(' ');icon=[parseInt(icon[0]),parseInt(icon[1])];
 								l('giftBoxIcon').dataset.icon=icon[0]+' '+icon[1];
 								l('giftBoxIcon').style.backgroundPosition=(-icon[0]*48)+'px '+(-icon[1]*48)+'px';
@@ -12180,8 +12180,8 @@ Game.Launch=function()
 							});
 						}
 					};
-					l('giftBoxIcon').addEventListener('click',func);
-					l('giftBoxIconNone').addEventListener('click',func);
+					l('giftBoxIcon').addEventListener('keypress',func);
+					l('giftBoxIconNone').addEventListener('keypress',func);
 					
 					var inputAmount=function(){
 						var val=parseInt(l('giftAmount').value||0);
@@ -12207,7 +12207,7 @@ Game.Launch=function()
 						e.preventDefault();
 						e.stopPropagation();
 					},true);
-					l('promptOption0').addEventListener('click',function(){
+					l('promptOption0').addEventListener('keypress',function(){
 						if (Game.cookies<1000000000) return false;
 						
 						Game.toSave=true;
@@ -14233,7 +14233,7 @@ Game.Launch=function()
 				if (Game.clicksThisSession>0)
 				{
 					if (Game.elderWrath>=3) PlayCue('fadeTo','grandmapocalypse');
-					else PlayCue('fadeTo','click');
+					else PlayCue('fadeTo','keypress');
 				}
 				Game.storeToRefresh=1;
 			}
@@ -16898,7 +16898,7 @@ window.onload=function()
 			for (var i in Langs)
 			{
 				var lang=Langs[i];
-				AddEvent(l('langSelect-'+i),'click',function(lang){return function(){callback(lang);};}(i));
+				AddEvent(l('langSelect-'+i),'keypress',function(lang){return function(){callback(lang);};}(i));
 				AddEvent(l('langSelect-'+i),'mouseover',function(lang){return function(){PlaySound('snd/smallTick.mp3',0.75);l('languageSelectHeader').innerHTML=Langs[lang].changeLanguage;};}(i));
 			}
 		}
