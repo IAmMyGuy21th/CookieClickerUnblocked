@@ -1078,7 +1078,7 @@ input[type=range]:active::-ms-thumb,input[type=range]:hover::-ms-thumb {backgrou
 }
 .wobbling
 {
-	animation:wobble 0.1s ease-out;
+	animation:wobble 0.01s ease-out;
 }
 
 .line
@@ -1898,7 +1898,7 @@ from {top:20px;opacity:0;}
 	100% {transform:translate(0px,0px);opacity:1;}
 }
 
-.pucker{animation:pucker 0.2s ease-out;}
+.pucker{animation:pucker 0.02s ease-out;}
 @keyframes pucker
 {
 	0% {transform:scale(1,1);}
@@ -1909,7 +1909,7 @@ from {top:20px;opacity:0;}
 	90% {transform:scale(0.95,1.05);}
 	100% {transform:scale(1,1);}
 }
-.puckerHalf{animation:puckerHalf 0.2s ease-out;}
+.puckerHalf{animation:puckerHalf 0.02s ease-out;}
 @keyframes puckerHalf
 {
 	0% {transform:scale(0.5,0.5);}
@@ -1927,14 +1927,14 @@ from {top:20px;opacity:0;}
 	0% 		{background:#f00;}
 	100% 	{}
 }
-.punchDown{animation:punchDown 0.3s ease-out;}
+.punchDown{animation:punchDown 0.03s ease-out;}
 @keyframes punchDown
 {
 	0% 		{transform:translate(0px,0px);}
 	20% 		{transform:translate(0px,4px);}
 	100% 		{transform:translate(0px,0px);}
 }
-.punchUp{animation:punchUp 0.3s ease-out;}
+.punchUp{animation:punchUp 0.03s ease-out;}
 @keyframes punchUp
 {
 	0% 		{transform:translate(0px,0px);}
