@@ -4848,9 +4848,9 @@ Game.Launch=function()
 		if (!Game.touchEvents)
 		{
 			AddEvent(bigCookie,'click',Game.ClickCookie);
-			AddEvent(bigCookie,'mousedown',function(event){Game.BigCookieState=1;if (Game.prefs.cookiesound) {Game.playCookieClickSound();}if (event) event.preventDefault();});
+			AddEvent(bigCookie,'keydown',function(event){Game.BigCookieState=1;if (Game.prefs.cookiesound) {Game.playCookieClickSound();}if (event) event.preventDefault();});
 			AddEvent(bigCookie,'mouseup',function(event){Game.BigCookieState=2;if (event) event.preventDefault();});
-			AddEvent(bigCookie,'mouseout',function(event){Game.BigCookieState=0;});
+			AddEvent(bigCookie,'keyup',function(event){Game.BigCookieState=0;});
 			AddEvent(bigCookie,'mouseover',function(event){Game.BigCookieState=2;});
 			AddEvent(document,'mousemove',Game.GetMouseCoords);
 			AddEvent(document,'mousedown',function(event){Game.lastActivity=Game.time;Game.mouseDown=1;Game.clickFrom=event.target;});
