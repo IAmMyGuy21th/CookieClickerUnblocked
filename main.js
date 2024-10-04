@@ -4847,7 +4847,7 @@ Game.Launch=function()
 		Game.mouseDown=0;
 		if (!Game.touchEvents)
 		{
-			AddEvent(bigCookie,'click',Game.ClickCookie);
+			AddEvent(bigCookie,'keypress',Game.ClickCookie);
 			AddEvent(bigCookie,'keydown',function(event){Game.BigCookieState=1;if (Game.prefs.cookiesound) {Game.playCookieClickSound();}if (event) event.preventDefault();});
 			AddEvent(bigCookie,'mouseup',function(event){Game.BigCookieState=2;if (event) event.preventDefault();});
 			AddEvent(bigCookie,'keyup',function(event){Game.BigCookieState=0;});
