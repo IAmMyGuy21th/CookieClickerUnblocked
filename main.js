@@ -4848,7 +4848,7 @@ Game.Launch=function()
 		if (!Game.touchEvents)
 		{
 			AddEvent(bigCookie,'keydown',Game.ClickCookie);
-			AddEvent(bigCookie,'keydown',function(event){Game.BigCookieState=1;if (Game.prefs.cookiesound) {Game.playCookieClickSound();}if (event) event.preventDefault();});
+			AddEvent(bigCookie,'keydown',function(event){Game.BigCookieState=1;if (Game.prefs.cookiesound && false) {Game.playCookieClickSound();}if (event) event.preventDefault();});
 			AddEvent(bigCookie,'mouseup',function(event){Game.BigCookieState=2;if (event) event.preventDefault();});
 			AddEvent(bigCookie,'keyup',function(event){Game.BigCookieState=0;});
 			AddEvent(bigCookie,'mouseover',function(event){Game.BigCookieState=2;});
@@ -16170,8 +16170,8 @@ Game.Launch=function()
 			Game.UpdateGrandmapocalypse();
 			
 			//these are kinda fun
-			//if (Game.BigCookieState==2 && !Game.promptOn && Game.Scroll!=0) Game.ClickCookie();
-			//if (Game.BigCookieState==1 && !Game.promptOn) Game.ClickCookie();
+			if (Game.BigCookieState==2 && !Game.promptOn && Game.Scroll!=0) Game.ClickCookie();
+			if (Game.BigCookieState==1 && !Game.promptOn) Game.ClickCookie();
 			
 			//handle graphic stuff
 			if (Game.prefs.wobbly)
