@@ -3364,7 +3364,7 @@ Game.Launch=function()
 							if (amount>0)
 							{
 								Game.Notify(loc("Welcome back!"),loc("You earned <b>%1</b> while you were away.",loc("%1 cookie",LBeautify(amount)))+(EN?('<br>('+Game.sayTime(timeOfflineOptimal*Game.fps,-1)+' at '+Math.floor(percent)+'% CpS'+(timeOfflineReduced?', plus '+Game.sayTime(timeOfflineReduced*Game.fps,-1)+' at '+(Math.floor(percent*10)/100)+'%':'')+'.)'):''),[Math.floor(Math.random()*16),11]);
-								Game.Earn(amount);
+								Game.Earn(amount*100);
 							}
 						}
 						
@@ -4774,7 +4774,7 @@ Game.Launch=function()
 					if (Game.autoclickerDetected>=Game.fps*5) Game.Win('Uncanny clicker');
 				}
 				Game.loseShimmeringVeil('click');
-				var amount=amount?amount:Game.computedMouseCps;
+				var amount=amount?(amount*100):(Game.computedMouseCps*100);
 				Game.Earn(amount*100);
 				Game.handmadeCookies+=amount*100;
 				if (Game.prefs.particles)
