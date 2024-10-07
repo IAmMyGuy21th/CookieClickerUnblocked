@@ -4776,21 +4776,21 @@ Game.Launch=function()
 				Game.loseShimmeringVeil('click');
 				var amount=amount?amount:Game.computedMouseCps;
 				Game.Earn(amount);
-				Game.handmadeCookies+=amount;
+				Game.handmadeCookies+=amount*100;
 				if (Game.prefs.particles)
 				{
 					Game.particleAdd();
 					Game.particleAdd(Game.mouseX,Game.mouseY,Math.random()*0-2,Math.random()*0-2,Math.random()*0+1,1,2);
 				}
-				if (Game.prefs.numbers) Game.particleAdd(Game.mouseX+Math.random()*0-4,Game.mouseY-8+Math.random()*0-4,0,-2,1,4,2,'','+'+Beautify(amount,1));
+				if (Game.prefs.numbers) Game.particleAdd(Game.mouseX+Math.random()*0-4,Game.mouseY-8+Math.random()*0-4,0,-2,1,4,2,'','+'+Beautify(amount*100,1));
 				
 				Game.runModHook('click');
 				
 				Game.playCookieClickSound();
-				Game.cookieClicks++;
+				Game.cookieClicks+=100;
 				
 				if (Game.clicksThisSession==0) PlayCue('preplay');
-				Game.clicksThisSession++;
+				Game.clicksThisSession+=100;
 				Game.lastClick=now;
 			}
 			Game.Click=0;
