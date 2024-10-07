@@ -4775,7 +4775,7 @@ Game.Launch=function()
 				}
 				Game.loseShimmeringVeil('click');
 				var amount=amount?amount:Game.computedMouseCps;
-				Game.Earn(amount);
+				Game.Earn(amount*100);
 				Game.handmadeCookies+=amount*100;
 				if (Game.prefs.particles)
 				{
